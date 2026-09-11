@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memories Gathered — A book made by everyone who knows them</title>
+<meta name="description" content="Bring together stories, memories, messages and photos from friends and family into one beautiful printed book. One link, no app, no accounts. Perfect for birthdays, retirements, anniversaries and more.">
+<meta property="og:title" content="Memories Gathered — Made by everyone">
+<meta property="og:description" content="One link. Everyone contributes a memory or photo. We create a beautiful printed keepsake book.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1F3D35">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #ECE6D3;
+    --bg-soft: #F4EFE0;
+    --ink: #1C2B26;
+    --ink-soft: #4E5D56;
+    --wine: #1F3D35;
+    --wine-deep: #122720;
+    --sage: #55684F;
+    --gold: #A9814B;
+    --card: #FBF8EE;
+    --line: rgba(28,43,38,0.14);
+    --radius: 4px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter', sans-serif; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{ font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; margin:0; }
+  a{ color:inherit; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+  .eyebrow{ font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--wine); font-weight:600; }
+
+  /* Accessibility: visible focus state for keyboard users */
+  a:focus-visible, button:focus-visible, input:focus-visible, .pill:focus-visible{
+    outline:2px solid var(--wine); outline-offset:2px;
+  }
+  .skip-link{
+    position:absolute; left:-9999px; top:0; background:var(--wine); color:#fff; padding:10px 16px;
+    z-index:100; border-radius:0 0 6px 0;
+  }
+  .skip-link:focus{ left:0; }
+
+  /* NAV */
+  nav{ position:sticky; top:0; z-index:40; background:rgba(236,230,211,0.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding-top:14px; padding-bottom:14px; gap:16px; flex-wrap:nowrap; }
+  .logo{ font-family:'Fraunces', serif; font-size:18px; font-weight:500; letter-spacing:-0.01em; display:flex; align-items:center; gap:10px; white-space:nowrap; }
+  .logo .mark{ width:40px; height:auto; flex-shrink:0; display:block; }
+  .logo .mark path{ fill:var(--wine); }
+  footer .logo{ font-size:19px; justify-content:center; }
+  footer .logo .mark{ width:56px; }
+  .navlinks{ display:none; gap:24px; font-size:14px; }
+  .navlinks a{ text-decoration:none; color:var(--ink-soft); white-space:nowrap; }
+  .navlinks a:hover{ color:var(--ink); }
+  @media(min-width:820px){ .navlinks{ display:flex; } }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer;
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:13px 22px; border-radius:var(--radius); text-decoration:none;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary{ background:var(--wine); color:#F4EFE0; }
+  .btn-primary:hover{ background:var(--wine-deep); transform:translateY(-1px); }
+  .btn-ghost{ background:transparent; border:1px solid var(--ink); color:var(--ink); padding:12px 21px; }
+  .btn-ghost:hover{ background:var(--ink); color:var(--bg-soft); }
+  .btn-block{ width:100%; justify-content:center; }
+  .btn-sm{ padding:10px 16px; font-size:13.5px; }
+  .nav-cta{ display:none; }
+  @media(min-width:560px){ .nav-cta{ display:inline-flex; } }
+
+  /* HERO */
+  .hero{ padding:56px 0 36px; overflow:hidden; }
+  .hero .wrap{ display:grid; grid-template-columns:1fr; gap:44px; align-items:center; }
+  @media(min-width:900px){ .hero .wrap{ grid-template-columns:1.05fr 0.95fr; } }
+  .hero h1{ font-size:clamp(30px,5.2vw,50px); line-height:1.08; }
+  .hero p.lede{ margin-top:18px; font-size:17.5px; color:var(--ink-soft); max-width:46ch; }
+  .hero-supporting{ margin-top:14px; font-size:14.5px; color:var(--wine); font-weight:600; }
+  .hero-ctas{ display:flex; gap:14px; margin-top:28px; flex-wrap:wrap; align-items:center; }
+  .hero-micro{ font-size:13px; color:var(--ink-soft); margin-top:14px; }
+
+  /* SIGNATURE VISUAL: book placeholder + refined memory notes */
+  .signature{ position:relative; height:360px; display:flex; align-items:center; justify-content:center; }
+  .book-frame{
+    position:relative; width:200px; height:270px; background:var(--card); border:1px solid var(--line);
+    border-radius:3px; box-shadow:0 24px 50px -20px rgba(18,39,32,0.4);
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:16px; z-index:2;
+  }
+  .book-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:3px; }
+  .book-frame .ph{ font-size:12px; color:var(--ink-soft); position:relative; z-index:1; }
+  .book-frame .ph b{ display:block; font-family:'Fraunces',serif; font-style:italic; font-size:15px; color:var(--ink); margin-bottom:4px; }
+  .note{
+    position:absolute; width:150px; background:var(--card); border:1px solid var(--line);
+    border-radius:2px; padding:14px 15px 12px; box-shadow:0 12px 26px -12px rgba(18,39,32,0.28);
+    font-family:'Fraunces', serif; font-style:italic; font-size:13.5px; color:var(--ink-soft); line-height:1.4; z-index:1;
+  }
+  .note span{ display:block; margin-top:9px; font-family:'Inter',sans-serif; font-style:normal; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); }
+  .n1{ left:0%; top:8%; transform:rotate(-6deg); }
+  .n2{ left:2%; bottom:6%; transform:rotate(4deg); }
+  .n3{ right:2%; top:2%; transform:rotate(-3deg); }
+  @media(max-width:899px){ .signature{ height:300px; } .book-frame{ width:160px; height:216px; } .note{ width:126px; font-size:12px; padding:11px; } .n3{ display:none; } }
+
+  /* SECTIONS */
+  section{ padding:72px 0; }
+  .section-head{ max-width:620px; margin-bottom:44px; }
+  .section-head h2{ font-size:clamp(24px,3.4vw,34px); margin-top:10px; }
+  .section-head p{ color:var(--ink-soft); margin-top:12px; font-size:16px; }
+  .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+
+  /* HOW IT WORKS */
+  .steps{ display:grid; grid-template-columns:1fr; gap:0; border-top:1px solid var(--line); }
+  .step{ display:grid; grid-template-columns:52px 1fr; gap:20px; padding:22px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+  .step .num{ font-family:'Fraunces', serif; font-size:20px; color:var(--gold); }
+  .step h3{ font-size:18px; font-weight:600; }
+  .step p{ margin-top:5px; color:var(--ink-soft); font-size:15px; max-width:56ch; }
+
+  /* BOOK SHOWCASE */
+  .showcase{ background:var(--bg-soft); }
+  .shots{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media(min-width:720px){ .shots{ grid-template-columns:repeat(4,1fr); } }
+  .shot{
+    aspect-ratio:3/4; border-radius:var(--radius); border:1px dashed rgba(28,43,38,0.28);
+    background:repeating-linear-gradient(135deg, rgba(28,43,38,0.04) 0 10px, transparent 10px 20px), var(--card);
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:14px;
+    font-size:12px; color:var(--ink-soft); position:relative; overflow:hidden;
+  }
+  .shot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .shot .label{ position:relative; z-index:1; }
+  .shot .label b{ display:block; font-family:'Fraunces',serif; font-size:14.5px; color:var(--ink); margin-bottom:4px; font-style:italic; }
+
+  /* OCCASIONS — icon card grid */
+  .occ-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media(min-width:640px){ .occ-grid{ grid-template-columns:repeat(3,1fr); } }
+  .occ-card{ background:var(--card); border:1px solid var(--line); border-radius:6px; padding:22px 16px; text-align:center; }
+  .occ-card svg{ width:30px; height:30px; margin:0 auto 12px; display:block; stroke:var(--wine); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .occ-card h3{ font-size:15px; font-weight:600; margin-bottom:5px; }
+  .occ-card p{ font-size:12.5px; color:var(--ink-soft); margin:0; line-height:1.4; }
+
+  /* TRUST */
+  .trust{ display:grid; grid-template-columns:1fr; gap:28px; }
+  @media(min-width:640px){ .trust{ grid-template-columns:repeat(2,1fr); } }
+  @media(min-width:1000px){ .trust{ grid-template-columns:repeat(4,1fr); } }
+  .trust-item{ padding:22px 0; border-top:1px solid var(--line); }
+  .trust-item h3{ font-size:16px; font-weight:600; margin-bottom:8px; }
+  .trust-item p{ color:var(--ink-soft); font-size:14.5px; margin:0; }
+
+  /* PROOF / TESTIMONIALS */
+  .proof{ display:grid; grid-template-columns:1fr; gap:16px; }
+  @media(min-width:640px){ .proof{ grid-template-columns:1fr 1fr; } }
+  @media(min-width:1000px){ .proof{ grid-template-columns:repeat(4,1fr); } }
+  .proof-card{ background:var(--card); border:1px solid var(--line); border-radius:6px; padding:22px 20px; }
+  .proof-card .stars{ color:var(--gold); font-size:13px; letter-spacing:2px; margin-bottom:10px; }
+  .proof-card p{ font-family:'Fraunces', serif; font-style:italic; font-size:15px; color:var(--ink); line-height:1.5; margin:0; }
+  .proof-card cite{ display:block; margin-top:12px; font-style:normal; font-size:12.5px; color:var(--ink-soft); }
+
+  /* PRICING */
+  .plans{ display:flex; justify-content:center; }
+  .plan{ background:var(--card); border:1px solid var(--wine); box-shadow:0 20px 40px -20px rgba(31,61,53,0.35); border-radius:6px; padding:32px 30px; display:flex; flex-direction:column; width:100%; max-width:360px; text-align:center; }
+  .plan h3{ font-size:16px; font-weight:600; }
+  .plan .price{ font-family:'Fraunces', serif; font-size:40px; margin-top:8px; }
+  .plan .price span{ font-family:'Inter',sans-serif; font-size:13.5px; color:var(--ink-soft); font-weight:400; }
+  .plan ul{ list-style:none; padding:0; margin:16px 0 24px; font-size:14px; color:var(--ink-soft); display:flex; flex-direction:column; gap:7px; text-align:left; }
+  .plan ul li::before{ content:"—"; margin-right:8px; color:var(--gold); }
+  .plan-actions{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .pricing-note{ text-align:center; margin-top:26px; font-size:13.5px; color:var(--ink-soft); }
+
+  /* FORM */
+  .formsec{ background:var(--bg-soft); }
+  .form-shell{ max-width:620px; margin:0 auto; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:36px 32px 28px; }
+  .progress{ display:flex; gap:6px; margin-bottom:26px; }
+  .progress i{ flex:1; height:3px; background:var(--line); border-radius:2px; overflow:hidden; }
+  .progress i em{ display:block; height:100%; width:0%; background:var(--wine); transition:width .25s ease; }
+  .fstep{ display:none; }
+  .fstep.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .fstep .kicker{ font-size:13px; color:var(--ink-soft); margin-bottom:4px; }
+  .fstep h3{ font-size:21px; margin-bottom:20px; }
+  label{ display:block; font-size:13.5px; font-weight:600; margin-bottom:7px; margin-top:15px; }
+  label:first-of-type{ margin-top:0; }
+  input[type=text], input[type=email], input[type=date], select{
+    width:100%; padding:12px 13px; border:1px solid var(--line); border-radius:4px; font-family:'Inter',sans-serif;
+    font-size:15px; background:#fff; color:var(--ink);
+  }
+  input:focus, select:focus{ outline:2px solid var(--wine); outline-offset:1px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:480px){ .row2{ grid-template-columns:1fr; } }
+  .pills{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pill{ border:1px solid var(--line); border-radius:30px; padding:9px 16px; font-size:14px; cursor:pointer; background:#fff; }
+  .pill.sel{ background:var(--wine); border-color:var(--wine); color:#F4EFE0; }
+  .field-hint{ font-size:12px; color:var(--ink-soft); margin-top:6px; }
+  .formnav{ display:flex; justify-content:space-between; margin-top:26px; gap:12px; }
+  .err{ color:var(--wine); font-size:13px; margin-top:8px; display:none; }
+  .summary{ background:var(--bg-soft); border-radius:6px; padding:16px 18px; font-size:14px; margin-bottom:18px; }
+  .summary div{ display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px dashed var(--line); }
+  .summary div:last-child{ border-bottom:none; font-weight:600; padding-top:9px; }
+  .hp-field{ position:absolute; left:-9999px; top:-9999px; }
+
+  /* FAQ */
+  .faq-item{ border-bottom:1px solid var(--line); padding:19px 0; }
+  .faq-q{ display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; font-size:15.5px; gap:12px; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; color:var(--ink-soft); font-size:14.5px; }
+  .faq-a p{ padding-top:11px; margin:0; }
+  .faq-q .plus{ font-size:19px; color:var(--gold); transition:transform .2s ease; flex-shrink:0; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-item.open .faq-a{ max-height:220px; }
+
+  /* FINAL CTA */
+  .final-cta{ text-align:center; }
+  .final-cta h2{ font-size:clamp(24px,3.6vw,34px); }
+  .final-cta p{ color:var(--ink-soft); margin-top:12px; font-size:16px; }
+  .final-cta .hero-ctas{ justify-content:center; margin-top:26px; }
+
+  footer{ padding:44px 0; text-align:center; color:var(--ink-soft); font-size:13.5px; border-top:1px solid var(--line); }
+  .footer-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin:18px 0; font-size:13px; }
+  .footer-links a{ text-decoration:none; color:var(--ink-soft); }
+  .footer-links a:hover{ color:var(--ink); }
+  footer .tagline{ margin-bottom:6px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg class="mark" viewBox="0 260 1290 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M82,508 L185,712 L128,551 L280,574 L420,612 L537,663 L616,719 L545,643 L425,581 L269,536 Z"/><path d="M1207.0,508 L1104.0,712 L1161.0,551 L1009.0,574 L869.0,612 L752.0,663 L673.0,719 L744.0,643 L864.0,581 L1020.0,536 Z"/><path d="M257,430 L257,507 L351,525 L468,567 L551,612 L634,676 L600,628 L564,591 L494,537 L380,475 Z"/><path d="M1032.0,430 L1032.0,507 L938.0,525 L821.0,567 L738.0,612 L655.0,676 L689.0,628 L725.0,591 L795.0,537 L909.0,475 Z"/><path d="M401,388 L401,457 L459,484 L527,528 L581,574 L634,634 L603,568 L552,502 L488,444 Z"/><path d="M888.0,388 L888.0,457 L830.0,484 L762.0,528 L708.0,574 L655.0,634 L686.0,568 L737.0,502 L801.0,444 Z"/></svg>
+      Memories Gathered
+    </div>
+    <div class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#book">The book</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#start" class="btn btn-primary nav-cta btn-sm">Start their book →</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Memories Gathered</p>
+      <h1>A book made by everyone who knows them.</h1>
+      <p class="lede">Bring together the stories, memories, messages and photographs from the people who matter most — and turn them into one beautiful book they'll treasure for years to come.</p>
+      <p class="hero-supporting">One link. Everyone contributes. We create the book. You give the gift.</p>
+      <div class="hero-ctas">
+        <a href="#start" class="btn btn-primary">Start their book →</a>
+        <a href="#book" class="btn btn-ghost">See inside the book →</a>
+      </div>
+      <p class="hero-micro">Perfect for birthdays, retirements, anniversaries, weddings, milestones and more.</p>
+    </div>
+    <div class="signature" aria-hidden="true">
+      <div class="note n1">I still remember the day you taught me to ride a bike.<span>From Sarah</span></div>
+      <div class="note n2">Every Sunday roast. Same seat, same stories.<span>From Tom</span></div>
+      <div class="note n3">You were the first call with good news.<span>From Priya</span></div>
+      <div class="book-frame">
+        <img src="photos/cover.jpg" alt="" onerror="this.style.display='none'">
+        <div class="ph"><b>Their book</b>Made from the memories of everyone who knows them.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section style="padding:56px 0;">
+  <div class="wrap" style="max-width:700px; text-align:center;">
+    <h2 style="font-size:clamp(22px,3vw,28px);">One person. Everyone they love. One unforgettable book.</h2>
+    <p style="color:var(--ink-soft); font-size:16.5px; margin-top:16px;">You don't have to write the book yourself. Simply share one link with their friends, family and loved ones. They can each add a favourite memory, message or photograph in their own words. We bring everything together and create the finished book for you.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>From one simple link to a book full of memories.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><div><h3>Tell us who it's for</h3><p>Choose the occasion and tell us a little about them.</p></div></div>
+      <div class="step"><div class="num">02</div><div><h3>Share one link</h3><p>Send it to their friends and family. No accounts. No app. Nothing to download.</p></div></div>
+      <div class="step"><div class="num">03</div><div><h3>Everyone adds their memory</h3><p>They can share a story, message or photograph — in their own words.</p></div></div>
+      <div class="step"><div class="num">04</div><div><h3>We create the book</h3><p>We carefully bring everyone's contributions together and turn them into a beautiful keepsake.</p></div></div>
+      <div class="step"><div class="num">05</div><div><h3>Give them their book</h3><p>It arrives professionally printed and ready to give.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="book" class="showcase">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Inside the book</p>
+      <h2>See what goes inside.</h2>
+      <p>Every book is different because every person is different. Stories, photographs, messages, inside jokes and moments from across their life — all brought together in one place.</p>
+    </div>
+    <!-- Replace the four images below with real photos of the book: photos/cover.jpg, photos/spread.jpg, photos/memory-page.jpg, photos/photo-page.jpg -->
+    <div class="shots">
+      <div class="shot"><img src="photos/cover.jpg" alt="Example of a Memories Gathered book cover" loading="lazy" onerror="this.style.display='none'"><div class="label"><b>Their cover</b>A book made entirely for them.</div></div>
+      <div class="shot"><img src="photos/spread.jpg" alt="Example spread of memory stories inside the book" loading="lazy" onerror="this.style.display='none'"><div class="label"><b>Stories from the people who know them</b>The memories that only friends and family can tell.</div></div>
+      <div class="shot"><img src="photos/memory-page.jpg" alt="Example single memory page from a contributor" loading="lazy" onerror="this.style.display='none'"><div class="label"><b>One friend's memory</b>Every contribution stays personal and in their own words.</div></div>
+      <div class="shot"><img src="photos/photo-page.jpg" alt="Example photo collage page inside the book" loading="lazy" onerror="this.style.display='none'"><div class="label"><b>Photographs through the years</b>Old photos, new photos and everything in between.</div></div>
+    </div>
+    <p style="text-align:center; margin-top:24px; font-family:'Fraunces',serif; font-style:italic; color:var(--ink-soft); font-size:15px;">No two Memories Gathered books are the same.</p>
+  </div>
+</section>
+
+<section class="showcase">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">Why Memories Gathered</p>
+      <h2>Not just a personalised gift.</h2>
+    </div>
+    <div class="trust">
+      <div class="trust-item"><h3>Every book is completely personal</h3><p>No generic templates filled with filler. Every book is created around one person, using the memories and photographs shared by the people who know them.</p></div>
+      <div class="trust-item"><h3>Everyone can be part of it</h3><p>One simple link means friends, family, colleagues and loved ones can contribute from anywhere. No account. No app. No complicated setup.</p></div>
+      <div class="trust-item"><h3>We do the work</h3><p>You gather the people. We bring everything together, design the book and prepare it for printing.</p></div>
+      <div class="trust-item"><h3>Professionally printed and made to last</h3><p>A proper printed and bound keepsake — something they can hold, read and come back to for years.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="occasions">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">The occasion</p>
+      <h2>The perfect gift for the moments that matter.</h2>
+      <p>Any occasion where the people who love someone have a story to tell.</p>
+    </div>
+    <div class="occ-grid">
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M9 12V7a3 3 0 0 1 6 0v5M12 4V2"/></svg>
+        <h3>Birthdays</h3>
+        <p>Not just another present. A collection of memories from everyone who knows them.</p>
+      </div>
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v13H4zM4 7l3-4h10l3 4M9 11a3 3 0 0 0 6 0"/></svg>
+        <h3>Retirements</h3>
+        <p>Bring together the stories, laughs and memories from a career shared with so many people.</p>
+      </div>
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-8.5C.7 8.8 2.2 5 6 5c2 0 3.3 1.2 4 2.3.7-1.1 2-2.3 4-2.3 3.8 0 5.3 3.8 3.5 7.5C19 16.65 12 21 12 21z"/></svg>
+        <h3>Anniversaries</h3>
+        <p>Celebrate a relationship through the memories of the people who've been there along the way.</p>
+      </div>
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><circle cx="16" cy="15" r="4"/><path d="M12 3l1.5 4h-3z"/></svg>
+        <h3>Weddings</h3>
+        <p>A collection of messages, memories and well-wishes from both families and friends.</p>
+      </div>
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 4.5 5 .7-3.6 3.5.8 5-4.4-2.3-4.4 2.3.8-5-3.6-3.5 5-.7z"/></svg>
+        <h3>Milestones</h3>
+        <p>50th birthdays, achievements, new chapters and any occasion worth celebrating.</p>
+      </div>
+      <div class="occ-card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-3 3-5 5.5-5 9a5 5 0 0 0 10 0c0-3.5-2-6-5-9z"/><path d="M4 21c2-2 4-2 8-2s6 0 8 2"/></svg>
+        <h3>Memorials</h3>
+        <p>A meaningful way to gather the memories and stories of someone who will never be forgotten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:640px;">
+    <p class="eyebrow">Our story</p>
+    <h2 style="font-size:clamp(22px,3vw,28px); margin-top:10px;">It started with one birthday book.</h2>
+    <p style="color:var(--ink-soft); font-size:16px; margin-top:14px;">We made our first Memories Gathered book for a 50th birthday and saw what happened when dozens of people were given the chance to contribute. Stories came out that even the family had never heard before.</p>
+    <p style="color:var(--ink-soft); font-size:16px; margin-top:12px;">That became the idea behind Memories Gathered: give everyone a chance to add their memory, then bring them all together into something worth keeping.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">Real memories</p>
+      <h2>The reaction says it all.</h2>
+    </div>
+    <div class="proof">
+      <div class="proof-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>I had absolutely no idea! Seeing all those memories and messages from so many people was incredibly special.</p>
+        <cite>— Vanessa, received a Memories Gathered book</cite>
+      </div>
+      <div class="proof-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>It was so easy to organise, and seeing everyone's memories brought together into one book made it such a meaningful gift.</p>
+        <cite>— Andy, organised a book</cite>
+      </div>
+      <div class="proof-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>It was so lovely to be part of something so personal. Sharing my memories brought back so many happy moments.</p>
+        <cite>— Joanna, took part in a book</cite>
+      </div>
+      <div class="proof-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>I loved looking back through all the memories. It was such a lovely idea and the finished book was really special.</p>
+        <cite>— Millie, took part in a book</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">Pricing</p>
+      <h2>A meaningful gift from £69</h2>
+      <p>Includes unlimited contributors, professional printing and UK delivery. Want to give a copy to more than one person? Add extra copies for family and loved ones.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Their book</h3>
+        <div class="price">£69<span> one book</span></div>
+        <ul>
+          <li>Memory book, 60 pages</li>
+          <li>Unlimited contributors via one link</li>
+          <li>Stories, messages and photos</li>
+          <li>UK delivery included</li>
+        </ul>
+        <div class="plan-actions">
+          <a href="#start" class="btn btn-primary btn-block">Start their book →</a>
+          <a href="#start" class="btn btn-ghost btn-block" id="addCopiesBtn">+ Add additional copies</a>
+        </div>
+      </div>
+    </div>
+    <p class="pricing-note">Nothing is printed until you've approved the finished book.</p>
+  </div>
+</section>
+
+<section id="start" class="formsec">
+  <div class="wrap">
+    <div class="section-head center" style="margin-bottom:30px;">
+      <p class="eyebrow">Start their book</p>
+      <h2>Start their book.</h2>
+      <p>Tell us a little about who you're celebrating. It takes around two minutes. We'll get back to you within 24 hours to confirm everything and get their book started.</p>
+    </div>
+
+    <form class="form-shell" id="orderForm" novalidate>
+      <div class="progress" id="progress"></div>
+
+      <!-- Honeypot field: hidden from real visitors, catches basic bots -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="companyWebsite">Leave this field blank</label>
+        <input type="text" id="companyWebsite" name="companyWebsite" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="fstep active" data-step="1">
+        <p class="kicker">Step 1 of 4</p>
+        <h3>Who is this book for?</h3>
+        <label for="personName">Their name</label>
+        <input type="text" id="personName" placeholder="e.g. Susan" required>
+        <div class="err">Please enter their name.</div>
+      </div>
+
+      <div class="fstep" data-step="2">
+        <p class="kicker">Step 2 of 4</p>
+        <h3>What's the occasion?</h3>
+        <div class="pills" id="occasionPills" role="group" aria-label="Occasion">
+          <div class="pill" data-value="60th Birthday" tabindex="0" role="button">60th Birthday</div>
+          <div class="pill" data-value="70th Birthday" tabindex="0" role="button">70th Birthday</div>
+          <div class="pill" data-value="Birthday" tabindex="0" role="button">Another Birthday</div>
+          <div class="pill" data-value="Retirement" tabindex="0" role="button">Retirement</div>
+          <div class="pill" data-value="Anniversary" tabindex="0" role="button">Anniversary</div>
+          <div class="pill" data-value="Wedding" tabindex="0" role="button">Wedding</div>
+          <div class="pill" data-value="Memorial" tabindex="0" role="button">Memorial</div>
+          <div class="pill" data-value="Other" tabindex="0" role="button">Other</div>
+        </div>
+        <div class="err">Please choose an occasion.</div>
+      </div>
+
+      <div class="fstep" data-step="3">
+        <p class="kicker">Step 3 of 4</p>
+        <h3>When do you need it by?</h3>
+        <label for="neededBy">Date needed</label>
+        <input type="date" id="neededBy" required>
+        <p class="field-hint">Printing and delivery usually takes 7–10 days once the book is approved.</p>
+        <div class="err">Please choose a date.</div>
+      </div>
+
+      <div class="fstep" data-step="4">
+        <p class="kicker">Step 4 of 4</p>
+        <h3>Who's organising the book?</h3>
+        <label>How many copies do you need?</label>
+        <div class="pills" id="copiesPills" role="group" aria-label="Number of copies">
+          <div class="pill sel" data-value="1" tabindex="0" role="button" aria-pressed="true">1 copy</div>
+          <div class="pill" data-value="2" tabindex="0" role="button" aria-pressed="false">2 copies</div>
+          <div class="pill" data-value="3" tabindex="0" role="button" aria-pressed="false">3 copies</div>
+          <div class="pill" data-value="4+" tabindex="0" role="button" aria-pressed="false">4+ copies</div>
+        </div>
+        <p class="field-hint">Every extra copy of the same book is £29.</p>
+        <label for="organiserName">Your name</label>
+        <input type="text" id="organiserName" required>
+        <label for="organiserEmail">Your email</label>
+        <input type="email" id="organiserEmail" required>
+        <p class="field-hint">We'll only use this to confirm details about their book. No spam, ever.</p>
+        <div class="err">Please enter your name and a valid email.</div>
+        <div class="summary" id="summaryBox" style="margin-top:20px;"></div>
+      </div>
+
+      <div class="formnav">
+        <button type="button" class="btn btn-ghost" id="backBtn">Back</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Continue</button>
+      </div>
+    </form>
+
+    <div class="form-shell" id="thankyou" style="display:none; text-align:center;" role="status">
+      <p class="eyebrow" style="justify-content:center; display:flex;">You're on your way</p>
+      <h3 style="margin-top:10px;">You're on your way.</h3>
+      <p style="color:var(--ink-soft); font-size:15px; margin-top:10px;">Thanks — we've got your details. We'll be in touch within 24 hours to confirm everything and get their Memories Gathered book started.</p>
+      <p style="color:var(--ink-soft); font-size:13.5px; margin-top:12px;">Nothing will be printed until we've confirmed the details with you.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">FAQ</p>
+      <h2>Good to know.</h2>
+    </div>
+    <div class="faqlist">
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">How does it work? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>You tell us who the book is for, then share one simple link with their friends and family. Everyone can add a memory, message or photograph. We bring everything together, create the book and arrange delivery.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">How many people can contribute? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>As many as you like. Whether it's five people or fifty, everyone can contribute through the same link.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Do people need to sign up? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>No. There are no accounts to create and nothing to download. They simply open the link, add their memory and submit it.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Can people add photos? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>Yes. Contributors can add a photograph alongside their memory or message.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">How long does it take? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>Once all the memories are in and the book is approved, printing and delivery usually takes around 7–10 days. We'll work backwards from your date to make sure there's enough time.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">What occasions is it suitable for? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>Birthdays, retirements, anniversaries, weddings, milestones and memorials — or any occasion where you want to bring everyone's memories together.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Can I order extra copies? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>Yes — just get in touch once the book is compiled and we'll arrange additional printed copies.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Do you deliver across the UK? <span class="plus" aria-hidden="true">+</span></div>
+        <div class="faq-a"><p>Yes, delivery anywhere in the UK is included in the price.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta showcase">
+  <div class="wrap">
+    <h2>Give them something they can't buy.</h2>
+    <p>A book full of memories from the people who know them best.</p>
+    <p style="margin-top:6px;">Tell us a little about who you're celebrating and we'll help you create their Memories Gathered book.</p>
+    <div class="hero-ctas">
+      <a href="#start" class="btn btn-primary" onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'});">Start their book →</a>
+    </div>
+    <p class="hero-micro" style="margin-top:18px;">Takes around 2 minutes · No commitment · We'll contact you within 24 hours · We'll confirm everything before printing</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">
+      <svg class="mark" viewBox="0 260 1290 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M82,508 L185,712 L128,551 L280,574 L420,612 L537,663 L616,719 L545,643 L425,581 L269,536 Z"/><path d="M1207.0,508 L1104.0,712 L1161.0,551 L1009.0,574 L869.0,612 L752.0,663 L673.0,719 L744.0,643 L864.0,581 L1020.0,536 Z"/><path d="M257,430 L257,507 L351,525 L468,567 L551,612 L634,676 L600,628 L564,591 L494,537 L380,475 Z"/><path d="M1032.0,430 L1032.0,507 L938.0,525 L821.0,567 L738.0,612 L655.0,676 L689.0,628 L725.0,591 L795.0,537 L909.0,475 Z"/><path d="M401,388 L401,457 L459,484 L527,528 L581,574 L634,634 L603,568 L552,502 L488,444 Z"/><path d="M888.0,388 L888.0,457 L830.0,484 L762.0,528 L708.0,574 L655.0,634 L686.0,568 L737.0,502 L801.0,444 Z"/></svg>
+      Memories Gathered
+    </div>
+    <div class="tagline">Made by everyone.</div>
+    <div class="footer-links">
+      <a href="#how">How it works</a>
+      <a href="#book">The book</a>
+      <a href="#occasions">Occasions</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#start" class="btn btn-primary btn-sm">Start their book →</a>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   CONFIG — replace this before going live.
+   MAKE_WEBHOOK_URL — a Make.com (or Formspree, or any webhook) URL that
+   receives each enquiry so you can see and reply to it. Until this is
+   set, enquiries still show the on-page "thank you" confirmation, but
+   nothing is sent anywhere — so set this before sharing the link.
+   ========================================================================= */
+const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/REPLACE_WITH_YOUR_WEBHOOK_ID";
+
+const steps = Array.from(document.querySelectorAll('.fstep'));
+const progress = document.getElementById('progress');
+let current = 0;
+let selectedOccasion = null;
+let selectedCopies = '1';
+steps.forEach(() => { const i = document.createElement('i'); i.innerHTML = '<em></em>'; progress.appendChild(i); });
+function paintProgress(){
+  progress.querySelectorAll('i em').forEach((em, idx) => { em.style.width = idx <= current ? '100%' : '0%'; });
+}
+function showStep(i){
+  steps.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  document.getElementById('backBtn').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = i === steps.length - 1 ? 'Continue →' : 'Continue →';
+  paintProgress();
+  if(i === steps.length - 1){ renderSummary(); }
+  // Move focus to the new step's heading for keyboard/screen-reader users
+  const heading = steps[i].querySelector('h3');
+  if(heading){ heading.setAttribute('tabindex','-1'); heading.focus(); }
+}
+
+function selectOccasion(pill){
+  document.querySelectorAll('#occasionPills .pill').forEach(p => { p.classList.remove('sel'); p.setAttribute('aria-pressed','false'); });
+  pill.classList.add('sel');
+  pill.setAttribute('aria-pressed','true');
+  selectedOccasion = pill.dataset.value;
+}
+document.getElementById('occasionPills').addEventListener('click', (e) => {
+  const pill = e.target.closest('.pill'); if(!pill) return;
+  selectOccasion(pill);
+});
+document.getElementById('occasionPills').addEventListener('keydown', (e) => {
+  const pill = e.target.closest('.pill'); if(!pill) return;
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); selectOccasion(pill); }
+});
+
+function selectCopies(pill){
+  document.querySelectorAll('#copiesPills .pill').forEach(p => { p.classList.remove('sel'); p.setAttribute('aria-pressed','false'); });
+  pill.classList.add('sel');
+  pill.setAttribute('aria-pressed','true');
+  selectedCopies = pill.dataset.value;
+}
+document.getElementById('copiesPills').addEventListener('click', (e) => {
+  const pill = e.target.closest('.pill'); if(!pill) return;
+  selectCopies(pill);
+});
+document.getElementById('copiesPills').addEventListener('keydown', (e) => {
+  const pill = e.target.closest('.pill'); if(!pill) return;
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); selectCopies(pill); }
+});
+
+document.getElementById('addCopiesBtn').addEventListener('click', () => {
+  // Jump straight to the copies question once the form's underway
+  setTimeout(() => {
+    const copiesLabel = document.querySelector('#copiesPills');
+    if(copiesLabel) copiesLabel.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 400);
+});
+
+function renderSummary(){
+  const box = document.getElementById('summaryBox');
+  box.innerHTML = `
+    <div><span>For</span><span>${escapeHtml(document.getElementById('personName').value || '—')}</span></div>
+    <div><span>Occasion</span><span>${escapeHtml(selectedOccasion || '—')}</span></div>
+    <div><span>Needed by</span><span>${escapeHtml(document.getElementById('neededBy').value || '—')}</span></div>
+    <div><span>Copies</span><span>${escapeHtml(selectedCopies || '1')}</span></div>
+  `;
+}
+function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+function validateStep(i){
+  const step = steps[i];
+  const errBox = step.querySelector('.err');
+  let ok = true;
+  if(i === 0){ ok = document.getElementById('personName').value.trim().length > 0; }
+  if(i === 1){ ok = !!selectedOccasion; }
+  if(i === 2){ ok = document.getElementById('neededBy').value.length > 0; }
+  if(i === 3){
+    const email = document.getElementById('organiserEmail').value;
+    ok = document.getElementById('organiserName').value.trim().length > 0 && /\S+@\S+\.\S+/.test(email);
+  }
+  if(errBox) errBox.style.display = ok ? 'none' : 'block';
+  return ok;
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if(!validateStep(current)) return;
+  if(current === steps.length - 1){
+    submitEnquiry();
+    return;
+  }
+  current++;
+  showStep(current);
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  if(current === 0) return;
+  current--;
+  showStep(current);
+});
+
+async function submitEnquiry(){
+  // Honeypot check: if this hidden field was filled in, it's almost certainly a bot.
+  // Silently show the thank-you screen without sending the webhook.
+  const honeypot = document.getElementById('companyWebsite').value;
+  if(honeypot){
+    document.getElementById('orderForm').style.display = 'none';
+    document.getElementById('thankyou').style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('nextBtn');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+
+  const enquiryRef = 'MG-' + Date.now().toString(36).toUpperCase();
+  const payload = {
+    enquiryRef,
+    personName: document.getElementById('personName').value.trim(),
+    occasion: selectedOccasion,
+    neededBy: document.getElementById('neededBy').value,
+    copies: selectedCopies,
+    organiserName: document.getElementById('organiserName').value.trim(),
+    organiserEmail: document.getElementById('organiserEmail').value.trim()
+  };
+
+  try{
+    if(MAKE_WEBHOOK_URL.indexOf('REPLACE') === -1){
+      await fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+    }
+  } catch(e){ /* still show the thank-you screen even if the webhook call fails */ }
+
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('thankyou').style.display = 'block';
+}
+
+showStep(0);
+
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  function toggle(){
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
+    if(!wasOpen){ item.classList.add('open'); q.setAttribute('aria-expanded','true'); }
+  }
+  q.addEventListener('click', toggle);
+  q.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+});
+</script>
+
+</body>
+</html>
